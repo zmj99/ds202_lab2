@@ -1,0 +1,57 @@
+---
+title: "individual1"
+author: "Zack Johnson"
+date: "9/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+require(tidyverse)
+require(GGally)
+require(patchwork)
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco)
+head(choco)
+
+#barplot of Rating
+rating_bar <- ggplot(data = choco, aes(Rating)) + geom_bar()
+#boxplot of Rating
+rating_box <- ggplot(data = choco, aes(Rating)) + geom_boxplot()
+#barplot of number of reports over years
+chocodate_bar <- ggplot(data = choco, aes(Date)) + geom_bar()
+#view the plots using patchwork
+plot(patchwork::patchworkGrob((rating_bar / rating_box) | chocodate_bar))
+#correlation plot of cocoa percentage, date, and rating
+ggpairs(choco[,c(4,7,13)])
+```
+
+### Summation of initial exploratory analysis
+As with many uses of subjective scores like `Rating`, the scores tend to be higher and the mean is higher than expected if it was a true normal distribution with a mean that is at 2.5 (the middle of the distribution). This is shown more specifically in the boxplot. The boxplot also reveals that the distribution is pretty tight with 75% of the values appearing between 3 and 3.5. Lastly we can see that the dates of the recorded ratings are approximately normally distributed.
+
+```{r}
+#make a table and then only take the descriptors that have more than 55 for Characteristics1 
+char1_table <- table(choco$Characteristics1)
+char1_table <- char1_table[char1_table > 55]
+char1_most <- names(char1_table)
+choco_char1 <- choco %>%
+  filter(Characteristics1 %in% char1_most)
+#do the same thing for Characteristics2
+char2_table <- table(choco$Characteristics2)
+char2_table <- char2_table[char2_table > 55]
+char2_most <- names(char1_table)
+choco_char2 <- choco %>%
+  filter(Characteristics2 %in% char2_most)
+
+char1_bar <- ggplot(data = choco_char1, aes(Rating, color = Characteristics1)) + geom_bar()
+
+char2_bar <- ggplot(data = choco_char2, aes(Rating, color = Characteristics2)) + geom_bar() 
+
+#plot the bar charts for both characteristics
+plot(patchworkGrob(char1_bar / char2_bar))
+```
+
+It isn't overly clear to me, based on this visual analysis, that there is much relationship with particular characteristics and the rating recieved en mass. It looks as though the terms "sweet" and "fatty" show up more in ratings in the neighborhood of 3-3.25 than in any higher scores but this may be virtue of having more scores in that range.
