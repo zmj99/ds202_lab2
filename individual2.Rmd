@@ -1,0 +1,63 @@
+---
+title: "Individual2"
+author: "Muhammad Idris"
+date: "9/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Reading the data
+
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco) 
+```
+
+## Searching for the Best Chocolates
+
+1. How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.  
+
+#Histogram of Cocoa rating distribution
+
+```{r}
+library(ggplot2)
+
+chocHist <-ggplot(choco, aes(x = Rating)) + 
+  geom_histogram(binwidth = 0.5, color="black", fill="blue")
+
+chocHist
+```
+The rating is centered towards 3.5 and there does not seem to be any outliers.  
+
+```{r}
+boxplot(choco[,'Rating'], ylab = "Rating", main = "Boxplot of Chocolate Ratings", col="blue")
+```
+Chocolate rating looks normally distributed with some outliers.
+
+2. How does the number of ratings depend on the year? Draw a bar chart of the number of reports.  
+
+#Bar chart of Cocoa rating by year
+
+```{r}
+ggplot(choco, aes(y = Rating, x = Date)) +
+  geom_bar(stat = "identity") + ggtitle(label = "Chocolate rating by year")
+```
+Ratings look like they increase until 2015 but has a consoderable drop in 2020.  
+
+3. Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+
+```{r}
+ggplot(choco,aes(x = Cocoa_Percent, y = Rating)) + geom_point()
+```
+```{r}
+summary(choco$Cocoa_Percent)
+```
+It looks like the chocolate ratings do not depend on the cocoa content since there is no trend. The average cocoa content is 71.7% and the values range from 42% to 100% cocoa content.  
+
+4. How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.  
+
+
+
