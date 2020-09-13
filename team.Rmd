@@ -8,3 +8,34 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+#Team question : Which company has the highest ratings?
+
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco) 
+```
+
+```{r}
+library(ggplot2) # Data visualization
+
+company_sorted <- sort(table(choco$Company), decreasing = TRUE)
+company_sorted
+```
+```{r}
+highestRated <- as.data.frame(choco[choco$Company=="Soma", ])
+highestRated
+```
+```{r}
+ggplot(highestRated, aes(x=Date, y=Rating,
+                              color=Company)) + geom_line(arrow = arrow())
+```
+```{r}
+secondRated <- as.data.frame(choco[choco$Company=="Arete", ])
+secondRated
+```
+```{r}
+ggplot(secondRated, aes(x=Date, y=Rating,
+                              color=Company)) + geom_line(arrow = arrow())
+```
+
+Soma is the highest rated company with Arete coming in second . geom_line shows the changes in ratings over the years.
