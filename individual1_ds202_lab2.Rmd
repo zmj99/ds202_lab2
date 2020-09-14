@@ -54,4 +54,4 @@ char2_bar <- ggplot(data = choco_char2, aes(Rating, color = Characteristics2)) +
 plot(patchworkGrob(char1_bar / char2_bar))
 ```
 
-It isn't overly clear to me, based on this visual analysis, that there is much relationship with particular characteristics and the rating recieved en mass. It looks as though the terms "sweet" and "fatty" show up more in ratings in the neighborhood of 3-3.25 than in any higher scores but this may be virtue of having more scores in that range.
+It isn't overly clear to me, based on this visual analysis, that there is much relationship with particular characteristics and the rating received en mass. It looks as though the terms "sweet" and "fatty" show up more in ratings in the neighborhood of 3-3.25 than in any higher scores but this may be virtue of having more scores in that range.

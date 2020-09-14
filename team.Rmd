@@ -37,5 +37,56 @@ secondRated
 ggplot(secondRated, aes(x=Date, y=Rating,
                               color=Company)) + geom_line(arrow = arrow())
 ```
-
 Soma is the highest rated company with Arete coming in second . geom_line shows the changes in ratings over the years.
+
+
+#Team question: What are some better ways we can look at the difference between types
+
+```{r}
+require(tidyverse)
+require(patchwork)
+
+#Im bringing in some of the data transformations I used in individual1.Rmd
+
+#make a table and then only take the descriptors that have more than 55 for Characteristics1 
+char1_table <- table(choco$Characteristics1)
+char1_table <- char1_table[char1_table > 55]
+char1_most <- names(char1_table)
+choco_char1 <- choco %>%
+  filter(Characteristics1 %in% char1_most)
+#do the same thing for Characteristics2
+char2_table <- table(choco$Characteristics2)
+char2_table <- char2_table[char2_table > 55]
+char2_most <- names(char1_table)
+choco_char2 <- choco %>%
+  filter(Characteristics2 %in% char2_most)
+
+#save box plots that are segmented by characteristic in question
+char1_box <- ggplot(data = choco_char1, aes(Rating, x = Characteristics1))+ 
+  geom_boxplot()
+char2_box <- ggplot(data = choco_char2, aes(Rating, x = Characteristics2))+ 
+  geom_boxplot()
+
+#plot the two together
+plot(patchworkGrob(char1_box / char2_box))
+
+#conduct a t test between creamy and all others
+t.test(choco_char1$Rating[choco_char1$Characteristics1 == "creamy"], choco_char1$Rating[choco_char1$Characteristics1 != "creamy"])
+```
+In this, in all likelihood, better look at the difference between characteristics, there are more clear some things that show up in more positive reviews. The word "creamy" has a mean for characteristic 1 that is at 3.5 that is statistically significantly different than all the others.
+#Team Question: Among the top 4 of national cocoa locations of origin, is there significant difference between Ratings
+```{r}
+require(tidyverse)
+
+#similar method of using table and names to extract the most frequent country of origin
+origin_table <- table(choco$Bean_Origin)
+origin_table <- origin_table[origin_table > 200]
+origin_most <- names(origin_table)
+choco_origin <- choco %>%
+  filter(choco$Bean_Origin %in% origin_most)
+
+#plot the box plots for each country
+ggplot(data = choco_origin, aes(Rating, x = Bean_Origin)) +
+  geom_boxplot()
+```
+Among these 4 top producing countries there is no statistical difference between the means of scores.
