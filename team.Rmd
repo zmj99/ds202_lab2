@@ -24,8 +24,9 @@ choco_highest5 <- choco %>%
   arrange(desc(mean_rate)) %>%
   filter(n > 5) #filter to be above the mean of n to avoid having 
 choco_highest5 <- choco_highest5[1:5,]
+choco_highest5
 ```
-
+This shows the top 5 average ratings by company (where there is a sample size of more than 5).
 
 #Team question: What are some better ways we can look at the difference between types
 
