@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-#Team question : Which company has the highest ratings?
+#Team question : Which company has the highest average ratings?
 
 ```{r}
 choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
@@ -16,28 +16,15 @@ str(choco)
 ```
 
 ```{r}
-library(ggplot2) # Data visualization
+require(tidyverse) # Data visualization
 
-company_sorted <- sort(table(choco$Company), decreasing = TRUE)
-company_sorted
+choco_highest5 <- choco %>%
+  group_by(Company) %>%
+  summarise(mean_rate = mean(Rating), n = n()) %>%
+  arrange(desc(mean_rate)) %>%
+  filter(n > 5) #filter to be above the mean of n to avoid having 
+choco_highest5 <- choco_highest5[1:5,]
 ```
-```{r}
-highestRated <- as.data.frame(choco[choco$Company=="Soma", ])
-highestRated
-```
-```{r}
-ggplot(highestRated, aes(x=Date, y=Rating,
-                              color=Company)) + geom_line(arrow = arrow())
-```
-```{r}
-secondRated <- as.data.frame(choco[choco$Company=="Arete", ])
-secondRated
-```
-```{r}
-ggplot(secondRated, aes(x=Date, y=Rating,
-                              color=Company)) + geom_line(arrow = arrow())
-```
-Soma is the highest rated company with Arete coming in second . geom_line shows the changes in ratings over the years.
 
 
 #Team question: What are some better ways we can look at the difference between types
@@ -89,4 +76,5 @@ choco_origin <- choco %>%
 ggplot(data = choco_origin, aes(Rating, x = Bean_Origin)) +
   geom_boxplot()
 ```
+
 Among these 4 top producing countries there is no statistical difference between the means of scores.
